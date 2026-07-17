@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AuthModule } from './auth/auth.module';
 import { CoursesModule } from './courses/courses.module';
+import { AttendanceModule } from './attendance/attendance.module';
+import { GradesModule } from './grades/grades.module';
 import { StudentModule } from './students/student.module';
 
 @Module({
@@ -17,7 +19,9 @@ import { StudentModule } from './students/student.module';
       }),
     }),
     AuthModule,
+    AttendanceModule,
     CoursesModule,
+    GradesModule,
     StudentModule,
   ],
 })

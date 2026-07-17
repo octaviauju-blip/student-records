@@ -10,7 +10,7 @@ import OtpVerificationModal from '@/components/OtpVerificationModal';
 export default function DashboardPage() {
   const isChecking = useRequireAuth();
   const { user, loadUserFromStorage } = useAuthStore();
-  const [stats, setStats] = useState({ enrolledCoursesCount: 0, totalCredits: 0 });
+  const [stats, setStats] = useState({ enrolledCoursesCount: 0, totalCredits: 0, attendanceRate: 0 });
   const [loading, setLoading] = useState(true);
   const [showOtpModal, setShowOtpModal] = useState(false);
 
@@ -34,8 +34,15 @@ export default function DashboardPage() {
         const parsedUser = JSON.parse(userData);
         const id = parsedUser.id || parsedUser._id;
 
-        const response = await apiClient.get(`/students/${id}/dashboard-stats`);
-        setStats(response.data);
+        const [dashboardRes, attendanceRes] = await Promise.all([
+          apiClient.get(`/students/${id}/dashboard-stats`),
+          apiClient.get(`/attendance/student/${id}/stats`).catch(() => ({ data: { percentage: 0 } })),
+        ]);
+
+        setStats({
+          ...dashboardRes.data,
+          attendanceRate: attendanceRes.data.percentage,
+        });
       } catch (error) {
         console.error('Failed to load dashboard stats:', error);
       } finally {
@@ -76,6 +83,7 @@ export default function DashboardPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '40px' }}>
               <StatCard icon="📚" title="Enrolled Courses" value={stats.enrolledCoursesCount.toString()} />
               <StatCard icon="⭐" title="Total Credits" value={stats.totalCredits.toString()} />
+              <StatCard icon="🗓️" title="Attendance Rate" value={`${stats.attendanceRate}%`} />
             </div>
           )}
 

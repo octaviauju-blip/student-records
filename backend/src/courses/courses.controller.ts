@@ -23,6 +23,11 @@ export class CoursesController {
     return this.coursesService.getAllCourses();
   }
 
+  @Get('public-overview')
+  async getPublicOverview() {
+    return this.coursesService.getPublicOverview();
+  }
+
   @Get(':id')
   async getCourse(@Param('id') id: string) {
     return this.coursesService.getCourse(id);

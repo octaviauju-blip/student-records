@@ -27,6 +27,29 @@ export class CoursesService {
     return this.courseModel.find();
   }
 
+  async getPublicOverview() {
+    const totalCourses = await this.courseModel.countDocuments();
+
+    const sampleCourses = await this.courseModel
+      .find({ status: 'ACTIVE' })
+      .select('code name credits')
+      .limit(6);
+
+    const enrollmentTotals = await this.courseModel.aggregate([
+      { $group: { _id: null, total: { $sum: '$students' } } },
+    ]);
+
+    return {
+      totalCourses,
+      totalEnrollments: enrollmentTotals[0]?.total || 0,
+      sampleCourses: sampleCourses.map((c) => ({
+        code: c.code,
+        name: c.name,
+        credits: c.credits,
+      })),
+    };
+  }
+
   async getCourse(id: string) {
     return this.courseModel.findById(id);
   }

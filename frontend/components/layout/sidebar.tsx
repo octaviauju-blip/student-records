@@ -16,6 +16,7 @@ export function Sidebar() {
   const menuItems = [
     { href: '/dashboard', label: 'Dashboard', icon: '📊' },
     { href: '/courses', label: 'Courses', icon: '📚' },
+    { href: '/attendance', label: 'Attendance', icon: '🗓️' },
     { href: '/profile', label: 'Profile', icon: '👤' },
   ];
 
@@ -24,6 +25,7 @@ export function Sidebar() {
   ? [
       { href: '/admin/students', label: 'Manage Students', icon: '⚙️' },
       { href: '/admin/courses', label: 'Manage Courses', icon: '📖' },
+      { href: '/admin/attendance', label: 'Mark Attendance', icon: '✅' },
     ]
   : [];
 

@@ -11,6 +11,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - name: Debug list files
+        run: find . -maxdepth 4 -type d
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
